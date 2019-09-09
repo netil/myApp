@@ -1,0 +1,32 @@
+language: node_js
+node_js:
+  - "10"
+dist: trusty # needs Ubuntu Trusty
+sudo: false  # no need for virtualization.
+
+before_install:
+  - npm install -g npm@latest
+install:
+  - npm install
+
+cache:
+  yarn: true
+  npm: true
+  directories:
+    - $HOME/.npm
+
+stages:
+  - release
+
+jobs:
+  include:
+    - stage: release
+      script: skip
+      deploy:
+        provider: script
+        skip_cleanup: true
+        script:
+          - npm run release
+        on:
+          repo: netil/myApp
+          all_branches: true
